@@ -46,11 +46,93 @@ public class LinkedList<E> {
     }
 
     /**
-     * Insert an element at the end of the list
-     * @param data
-     * The element to be inserted
+     * Get the value at a specified index. Returns null by default.
+     * 
+     * @param index The index of the item you are retrieving
      */
-    public LinkedList<E> insert(E data) {
+    public E get(int index) {
+        Node<E> currentNode = head;
+        int counter = 0;
+
+        if (currentNode == null) {
+            return null;
+        }
+
+        while (currentNode != null) {
+            if (counter == index) {
+                return currentNode.data;
+            }
+
+            currentNode = currentNode.next;
+            counter++;
+        }
+        return null;
+    }
+
+    /**
+     * Find an element within the list
+     * 
+     * @param data The element to be searched for
+     * @return The index of the element. Defaults to zero if the element is not
+     *         found.
+     */
+    public int find(E data) {
+        Node<E> currentNode = head;
+        int counter = 0;
+
+        while (currentNode != null) {
+            if (currentNode.data.equals(data)) {
+                return counter;
+            }
+
+            currentNode = currentNode.next;
+            counter++;
+        }
+        return -1;
+    }
+
+    /**
+     * Insert an element to any position of the list. If the position is not within
+     * the list the data will be appended to the end of the list
+     * 
+     * @param data  The element to be inserted
+     * @param index The position of the element to be inserted
+     * 
+     */
+    public LinkedList<E> insert(E data, int index) {
+        Node<E> currentNode = head;
+        int counter = 1;
+
+        if (currentNode == null) {
+            head = new Node<E>(data, null);
+            return this;
+        }
+
+        if (index == 0) {
+            head = new Node<E>(data, head);
+            return this;
+        }
+
+        while (currentNode.next != null) {
+            if (counter == index) {
+                currentNode.next = new Node<E>(data, currentNode.next);
+                return this;
+            }
+
+            currentNode = currentNode.next;
+            counter++;
+        }
+
+        currentNode.next = new Node<E>(data, null);
+        return this;
+    }
+
+    /**
+     * Append an element at the end of the list
+     * 
+     * @param data The element to be inserted
+     */
+    public LinkedList<E> append(E data) {
         Node<E> newNode = new Node<E>(data, null);
 
         if (head == null) {
@@ -95,9 +177,9 @@ public class LinkedList<E> {
 
     /**
      * Remove an element from a list based on position
-     * @param index
-     * The position of the element to be removed with the 
-     * first element having a position of zero
+     * 
+     * @param index The position of the element to be removed with the first element
+     *              having a position of zero
      */
     public LinkedList<E> removeByIndex(int index) {
         Node<E> currentNode = head;
@@ -122,15 +204,30 @@ public class LinkedList<E> {
         return this;
     }
 
+    public int length() {
+        Node<E> currentNode = head;
+        int counter = 0;
+
+        while (currentNode != null) {
+            currentNode = currentNode.next;
+            counter++;
+        }
+        return counter;
+    }
+
     /**
      * Print out the elements of the list
      */
     public void print() {
         Node<E> currentNode = head;
 
-        while (currentNode != null) {
-            System.out.println(currentNode.data + " ");
+        System.out.print("[");
+
+        while (currentNode.next != null) {
+            System.out.print(currentNode.data + ", ");
             currentNode = currentNode.next;
         }
+
+        System.out.print(currentNode.data + "]");
     }
 }
